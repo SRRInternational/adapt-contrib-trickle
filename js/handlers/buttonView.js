@@ -136,6 +136,11 @@ define([
     setButtonVisible: function(isVisible) {
       var trickle = Adapt.trickle.getModelConfig(this.model);
       trickle._button._isVisible = Boolean(isVisible);
+      if (trickle._button._isVisible) {
+        Adapt.trigger("trickle:buttonUnlocked", this, true);
+      } else {
+        Adapt.trigger("trickle:buttonLocked", this, false);
+      }
       this.$(".js-trickle-btn-container").toggleClass("u-display-none", !trickle._button._isVisible);
     },
 
