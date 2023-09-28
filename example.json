@@ -22,6 +22,7 @@
             "_autoHide": false,
             "_className": "",
             "_hasIcon": false,
+            "_showLockedIcon": true,
             "text": "Continue",
             "startText": "Begin",
             "finalText": "Finish",

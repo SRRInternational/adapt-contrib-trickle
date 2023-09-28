@@ -127,6 +127,33 @@
                     "translatable": true
                   }
                 },
+                "_showLockedIcon": {
+                  "type": "boolean",
+                  "title": "Enable locked button icon",
+                  "inputType": "Checkbox",
+                  "description": "Displays a locked icon for locked pages",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "showlockedText": {
+                  "type": "boolean",
+                  "title": "Show locked message in button",
+                  "inputType": "Checkbox",
+                  "description": "Displays a locked text in button",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
+                "lockedText": {
+                  "type": "string",
+                  "title": "Locked Button Text",
+                  "inputType": "Text",
+                  "description": "Text visible on trickle button when view is locked",
+                  "_adapt": {
+                    "translatable": true
+                  }
+                },
                 "_component": {
                   "type": "string",
                   "title": "Trickle plugin",

@@ -7,28 +7,38 @@
     <button class="trickle__btn js-trickle-btn {{#if _trickle._button._isDisabled}} is-disabled{{/if}}{{#if _trickle._button._hasIcon}} btn-icon{{/if}}{{#any _trickle._button.finalText _trickle._button.text _trickle._button.startText}} btn-text{{/any}}"{{#if _trickle._button._isDisabled}} disabled="disabled"{{/if}}>
 
       {{#if _trickle._button._hasIcon}}
-      <div class="trickle__btn-icon">
-        <div class="icon"></div>
-      </div>
+        <div class="trickle__btn-icon">
+          <div class="icon icon-controls-small-down"></div>
+        </div>
+      {{else}}
+        {{#if _trickle._button._showLockedIcon}}
+          <div class="trickle__btn-icon">
+            <div class="icon icon-padlock-locked"></div>
+          </div>
+        {{/if}}
       {{/if}}
 
       {{#any _trickle._button.finalText _trickle._button.text _trickle._button.startText}}
       <div class="trickle__btn-text">
         <div class="trickle__btn-text-inner">
-          {{#if _trickle._isFinal}}
-            {{#if _trickle._button.finalText}}
-              {{{_trickle._button.finalText}}}
+          {{#if _trickle.showlockedText}}
+              {{{_trickle._button.lockedText}}}
             {{else}}
-              {{{_trickle._button.text}}}
-            {{/if}}
-          {{else}}
-            {{#if _trickle._isStart}}
-              {{#if _trickle._button.startText}}
-                {{{_trickle._button.startText}}}
+              {{#if _trickle._isFinal}}
+                {{#if _trickle._button.finalText}}
+                  {{{_trickle._button.finalText}}}
+                {{else}}
+                  {{{_trickle._button.text}}}
+                {{/if}}
+              {{else}}
+                {{#if _trickle._isStart}}
+                  {{#if _trickle._button.startText}}
+                    {{{_trickle._button.startText}}}
+                  {{/if}}
+                {{else}}
+                  {{{_trickle._button.text}}}
+                {{/if}}
               {{/if}}
-            {{else}}
-              {{{_trickle._button.text}}}
-            {{/if}}
           {{/if}}
         </div>
       </div>

@@ -53,6 +53,7 @@ define([
         trickle._button._isDisabled = false;
       } else if (trickle._button._styleBeforeCompletion === "visible") {
         this.allowEnabled = false;
+        trickle.showlockedText = trickle._button.showlockedText ? true : false;
         trickle._button._isDisabled = true;
       } else {
         trickle._button._isDisabled = false;
@@ -246,7 +247,22 @@ define([
 
           this.isStepLockFinished = true;
         }
-
+        var trickle = Adapt.trickle.getModelConfig(this.model);
+        if (trickle._button._showLockedIcon) {
+          $(this.el)
+            .find(".trickle__btn-icon .icon")
+            .removeClass("icon-padlock-locked");
+          if (trickle._button._hasIcon) $(this.el).addClass("icon-controls-small-down");
+        }
+        if (
+          trickle.showlockedText &&
+          trickle._button._styleBeforeCompletion === "visible"
+        ) {
+          trickle.showlockedText = false;
+          $(this.el).find(
+            ".trickle__btn-text .trickle__btn-text-inner"
+          )[0].innerText = trickle._button.text;
+        }
         this.allowVisible = true;
         this.allowEnabled = true;
       }

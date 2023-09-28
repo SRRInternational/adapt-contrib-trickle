@@ -189,6 +189,33 @@
                       "help": "Only on articles when 'Enable on Child Blocks' set to true",
                       "translatable": true
                     },
+                    "_showLockedIcon": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable locked button icon",
+                      "inputType": "Checkbox",
+                      "validators": [],
+                      "help": "Displays a locked icon for locked pages"
+                    },
+                    "showlockedText": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Show locked message in button",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "lockedText": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Complete the content above before moving on",
+                      "title": "Locked Button Text",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Text visible on trickle button when view is locked",
+                      "translatable": true
+                    },
                     "_component": {
                       "type": "string",
                       "required": false,
@@ -367,6 +394,32 @@
                       "inputType": "Text",
                       "validators": [],
                       "help": "Only on articles when 'Enable on Child Blocks' set to true",
+                      "translatable": true
+                    },                    "_showLockedIcon": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable locked button icon",
+                      "inputType": "Checkbox",
+                      "validators": [],
+                      "help": "Displays a locked icon for locked pages"
+                    },
+                    "showlockedText": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Show locked message in button",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "lockedText": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Complete the content above before moving on",
+                      "title": "Locked Button Text",
+                      "inputType": "Text",
+                      "validators": [],
+                      "help": "Text visible on trickle button when view is locked",
                       "translatable": true
                     },
                     "_component": {
