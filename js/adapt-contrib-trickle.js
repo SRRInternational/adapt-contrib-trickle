@@ -104,6 +104,37 @@ define([
       }
 
       if (scrollToId === '') return;
+      var pageId = scrollToId;
+      var currentPageId;
+      var scrollToModel = Adapt.findById(scrollToId);
+      switch(scrollToModel.get("_type")){
+        case "block":
+          pageId = scrollToModel.get("_parent").get("_parent").get("_id");
+          break;
+        case "article":
+          pageId = scrollToModel.get("_parent").get("_id");
+          break;
+        case "page":
+          pageId = scrollToModel.get("_id");
+          break;
+      }
+      switch(fromModel.get("_type")){
+        case "block":
+          currentPageId = fromModel.get("_parent").get("_parent").get("_id");
+          break;
+        case "article":
+          currentPageId = fromModel.get("_parent").get("_id");
+          break;
+        case "page":
+          currentPageId = fromModel.get("_id");
+          break;
+      }
+      if (pageId !== currentPageId) {
+        Backbone.history.navigate(`#/id/${pageId}`, {
+          trigger: true,
+        });
+        return;
+      }
 
       if (hasTrickleButton) { // only set focus if there's a trickle button - see https://github.com/adaptlearning/adapt_framework/issues/2813
         Adapt.a11y.focusFirst($('.' + scrollToId), { preventScroll: true });
