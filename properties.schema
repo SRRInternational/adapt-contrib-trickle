@@ -395,7 +395,8 @@
                       "validators": [],
                       "help": "Only on articles when 'Enable on Child Blocks' set to true",
                       "translatable": true
-                    },                    "_showLockedIcon": {
+                    },
+                    "_showLockedIcon": {
                       "type": "boolean",
                       "required": false,
                       "default": true,

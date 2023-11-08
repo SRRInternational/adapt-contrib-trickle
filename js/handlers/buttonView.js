@@ -1,12 +1,10 @@
-define([
-  'core/js/adapt',
-  'core/js/views/componentView'
-], function(Adapt, ComponentView) {
-
+define(["core/js/adapt", "core/js/views/componentView"], function (
+  Adapt,
+  ComponentView
+) {
   var completionAttribute = "_isComplete";
 
   var TrickleButtonView = Backbone.View.extend({
-
     isStepLocking: false,
     hasStepLocked: false,
     isStepLocked: false,
@@ -17,20 +15,18 @@ define([
     allowEnabled: true,
     overlayShownCount: 0,
 
-    el: function() {
-
+    el: function () {
       this.setupPreRender();
 
-      return Handlebars.templates['trickle-button'](this.model.toJSON());
+      return Handlebars.templates["trickle-button"](this.model.toJSON());
     },
 
-    setupPreRender: function() {
-
+    setupPreRender: function () {
       this.setupButtonVisible();
       this.setupButtonEnabled();
     },
 
-    setupButtonVisible: function() {
+    setupButtonVisible: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
       this.allowVisible = false;
       trickle._button._isVisible = false;
@@ -45,7 +41,7 @@ define([
       }
     },
 
-    setupButtonEnabled: function() {
+    setupButtonEnabled: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
 
       if (trickle._stepLocking._isCompletionRequired === false) {
@@ -59,33 +55,32 @@ define([
         trickle._button._isDisabled = false;
         this.allowEnabled = true;
       }
-
     },
 
     events: {
-      "click .js-trickle-btn": "onButtonClick"
+      "click .js-trickle-btn": "onButtonClick",
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.getCompletionAttribute();
       this.debounceCheckAutoHide();
       this.setupStepLocking();
       this.setupEventListeners();
     },
 
-    getCompletionAttribute: function() {
+    getCompletionAttribute: function () {
       var trickle = Adapt.trickle.getModelConfig(Adapt.config);
       if (!trickle) return;
       if (!trickle._completionAttribute) return;
       completionAttribute = trickle._completionAttribute;
     },
 
-    setupStepLocking: function() {
+    setupStepLocking: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
       this.isStepLocked = Boolean(trickle._stepLocking._isEnabled);
     },
 
-    setupEventListeners: function() {
+    setupEventListeners: function () {
       this.listenTo(Adapt, {
         "trickle:overlay": this.onOverlay,
         "trickle:unoverlay": this.onUnoverlay,
@@ -94,18 +89,22 @@ define([
         "trickle:skip": this.onSkip,
         "trickle:kill": this.onKill,
         "trickle:update": this.onUpdate,
-        "remove": this.onRemove
+        remove: this.onRemove,
       });
 
-      this.listenTo(this.model, "change:"+completionAttribute, this.onCompletion);
+      this.listenTo(
+        this.model,
+        "change:" + completionAttribute,
+        this.onCompletion
+      );
     },
 
-    debounceCheckAutoHide: function() {
+    debounceCheckAutoHide: function () {
       this.checkButtonAutoHideSync = this.checkButtonAutoHide.bind(this);
       this.checkButtonAutoHide = _.debounce(this.checkButtonAutoHideSync, 100);
     },
 
-    checkButtonAutoHide: function() {
+    checkButtonAutoHide: function () {
       if (!this.allowVisible) {
         this.setButtonVisible(false);
         return;
@@ -123,7 +122,7 @@ define([
       var measurements = this.$el.onscreen();
 
       // This is to fix common miscalculation issues
-      var isJustOffscreen = (measurements.bottom > -100);
+      var isJustOffscreen = measurements.bottom > -100;
 
       // add show/hide animation here if needed
       if (measurements.onscreen || isJustOffscreen) {
@@ -133,7 +132,7 @@ define([
       }
     },
 
-    setButtonVisible: function(isVisible) {
+    setButtonVisible: function (isVisible) {
       var trickle = Adapt.trickle.getModelConfig(this.model);
       trickle._button._isVisible = Boolean(isVisible);
       if (trickle._button._isVisible) {
@@ -141,32 +140,38 @@ define([
       } else {
         Adapt.trigger("trickle:buttonLocked", this, false);
       }
-      this.$(".js-trickle-btn-container").toggleClass("u-display-none", !trickle._button._isVisible);
+      this.$(".js-trickle-btn-container").toggleClass(
+        "u-display-none",
+        !trickle._button._isVisible
+      );
     },
 
-    checkButtonEnabled: function() {
+    checkButtonEnabled: function () {
       this.setButtonEnabled(this.allowEnabled);
     },
 
-    setButtonEnabled: function(isEnabled) {
+    setButtonEnabled: function (isEnabled) {
       var trickle = Adapt.trickle.getModelConfig(this.model);
       var $button = this.$(".js-trickle-btn");
       if (isEnabled) {
         $button.removeClass("is-disabled").removeAttr("disabled");
         trickle._button._isDisabled = true;
         // move focus forward if it's on the aria-label
-        if (document.activeElement instanceof HTMLElement && document.activeElement.isSameNode(this.$('.aria-label')[0])) {
-          this.$('.aria-label').focusNext();
+        if (
+          document.activeElement instanceof HTMLElement &&
+          document.activeElement.isSameNode(this.$(".aria-label")[0])
+        ) {
+          this.$(".aria-label").focusNext();
         }
         // make label unfocusable as it is no longer needed
-        this.$('.aria-label').a11y_cntrl(false);
+        this.$(".aria-label").a11y_cntrl(false);
       } else {
         $button.addClass("is-disabled").attr("disabled", "disabled");
         trickle._button._isDisabled = false;
       }
     },
 
-    onStepLock: function(view) {
+    onStepLock: function (view) {
       if (!this.isViewMatch(view)) return;
 
       this.hasStepLocked = true;
@@ -176,8 +181,9 @@ define([
       var trickle = Adapt.trickle.getModelConfig(this.model);
 
       if (!this.isButtonEnabled()) return;
-      var isCompleteAndShouldRelock = (trickle._stepLocking._isLockedOnRevisit &&
-          this.model.get(completionAttribute));
+      var isCompleteAndShouldRelock =
+        trickle._stepLocking._isLockedOnRevisit &&
+        this.model.get(completionAttribute);
 
       if (isCompleteAndShouldRelock) {
         this.isStepLocked = true;
@@ -195,35 +201,34 @@ define([
       this.setupOnScreenListener();
     },
 
-    onOverlay: function() {
+    onOverlay: function () {
       this.overlayShownCount++;
     },
 
-    onUnoverlay: function() {
+    onUnoverlay: function () {
       this.overlayShownCount--;
       this.checkButtonAutoHide();
     },
 
-    setupOnScreenListener: function() {
+    setupOnScreenListener: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
 
       if (!trickle._button._autoHide) return;
       this.$el.on("onscreen", this.checkButtonAutoHideSync);
-
     },
 
-    isViewMatch: function(view) {
+    isViewMatch: function (view) {
       return view.model.get("_id") === this.model.get("_id");
     },
 
-    isButtonEnabled: function() {
+    isButtonEnabled: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
 
       if (!trickle._isEnabled || !trickle._button._isEnabled) return false;
       return true;
     },
 
-    onCompletion: function(model, value) {
+    onCompletion: function (model, value) {
       if (value === false) return;
 
       this.hasStepPreCompleted = true;
@@ -233,8 +238,7 @@ define([
       this.stepCompleted();
     },
 
-    stepCompleted: function() {
-
+    stepCompleted: function () {
       if (this.isStepLockFinished) return;
 
       this.isStepLocked = false;
@@ -243,13 +247,10 @@ define([
 
       if (this.isButtonEnabled()) {
         if (this.isStepLocking) {
-
           this.isStepLocked = true;
           this.isWaitingForClick = true;
           Adapt.trigger("trickle:wait");
-
         } else {
-
           this.isStepLockFinished = true;
         }
         var trickle = Adapt.trickle.getModelConfig(this.model);
@@ -275,19 +276,18 @@ define([
       this.model.set("_isTrickleAutoScrollComplete", false);
       this.checkButtonAutoHideSync();
       this.checkButtonEnabled();
-
     },
 
-    onButtonClick: function() {
+    onButtonClick: function () {
       var trickle = this.model.get("_trickle");
       switch (trickle._button._styleAfterClick) {
-      case "hidden":
-        this.allowVisible = false;
-        this.checkButtonAutoHideSync();
-        break;
-      case "disabled":
-        this.allowEnabled = false;
-        this.checkButtonAutoHideSync();
+        case "hidden":
+          this.allowVisible = false;
+          this.checkButtonAutoHideSync();
+          break;
+        case "disabled":
+          this.allowEnabled = false;
+          this.checkButtonAutoHideSync();
       }
 
       if (this.isStepLocked) {
@@ -300,7 +300,7 @@ define([
       }
     },
 
-    onUpdate: function() {
+    onUpdate: function () {
       var trickle = Adapt.trickle.getModelConfig(this.model);
 
       if (trickle._button._autoHide && this.isStepLocking) {
@@ -308,7 +308,9 @@ define([
       }
 
       var $original = this.$el;
-      var $newEl = $(Handlebars.templates['trickle-button'](this.model.toJSON()));
+      var $newEl = $(
+        Handlebars.templates["trickle-button"](this.model.toJSON())
+      );
       $original.replaceWith($newEl);
 
       this.setElement($newEl);
@@ -318,26 +320,29 @@ define([
       }
     },
 
-    onStepUnlock: function(view) {
+    onStepUnlock: function (view) {
       if (!this.isViewMatch(view)) return;
       this.$el.off("onscreen", this.checkButtonAutoHideSync);
       this.isStepLocking = false;
       this.overlayShownCount = 0;
       // move focus forward if it's on the aria-label
-      if (document.activeElement instanceof HTMLElement && document.activeElement.isSameNode(this.$('.aria-label')[0])) {
-        this.$('.aria-label').focusNext();
+      if (
+        document.activeElement instanceof HTMLElement &&
+        document.activeElement.isSameNode(this.$(".aria-label")[0])
+      ) {
+        this.$(".aria-label").focusNext();
       }
       // make label unfocusable as it is no longer needed
-      this.$('.aria-label').a11y_cntrl(false);
+      this.$(".aria-label").a11y_cntrl(false);
     },
 
-    onSkip: function() {
+    onSkip: function () {
       if (!this.isStepLocking) return;
 
       this.onKill();
     },
 
-    onKill: function() {
+    onKill: function () {
       this.$el.off("onscreen", this.checkButtonAutoHideSync);
       if (this.isWaitingForClick) {
         this.model.set("_isTrickleAutoScrollComplete", true);
@@ -353,7 +358,7 @@ define([
       this.checkButtonEnabled();
     },
 
-    onRemove: function() {
+    onRemove: function () {
       if (this.isWaitingForClick) {
         this.model.set("_isTrickleAutoScrollComplete", true);
       }
@@ -361,10 +366,8 @@ define([
       this.$el.off("onscreen", this.checkButtonAutoHideSync);
       this.isStepLocking = true;
       this.remove();
-    }
-
+    },
   });
 
   return TrickleButtonView;
-
 });

@@ -6,18 +6,10 @@
 
     <button class="trickle__btn js-trickle-btn {{#if _trickle._button._isDisabled}} is-disabled{{/if}}{{#if _trickle._button._hasIcon}} btn-icon{{/if}}{{#any _trickle._button.finalText _trickle._button.text _trickle._button.startText}} btn-text{{/any}}"{{#if _trickle._button._isDisabled}} disabled="disabled"{{/if}}>
 
-      {{#if _trickle._button._hasIcon}}
-        <div class="trickle__btn-icon">
-          <div class="icon icon-controls-small-down"></div>
-        </div>
-      {{else}}
-        {{#if _trickle._button._showLockedIcon}}
-          <div class="trickle__btn-icon">
-            <div class="icon icon-padlock-locked"></div>
-          </div>
-        {{/if}}
-      {{/if}}
-
+      <div class="trickle__btn-icon">
+        <div class="icon {{#if _trickle._button._hasIcon}}icon-controls-small-down{{else}}{{#if _trickle._button._showLockedIcon}}icon-padlock-locked{{/if}}{{/if}}"></div>
+      </div>
+      
       {{#any _trickle._button.finalText _trickle._button.text _trickle._button.startText}}
       <div class="trickle__btn-text">
         <div class="trickle__btn-text-inner">
