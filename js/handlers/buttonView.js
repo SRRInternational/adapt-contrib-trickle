@@ -258,7 +258,10 @@ define(["core/js/adapt", "core/js/views/componentView"], function (
           $(this.el)
             .find(".trickle__btn-icon .icon")
             .removeClass("icon-padlock-locked");
-          if (trickle._button._hasIcon) $(this.el).addClass("icon-controls-small-down");
+          if (trickle._button._hasIcon)
+            $(this.el)
+              .find("button .icon")
+              .addClass("icon-controls-small-down");
         }
         if (
           trickle.showlockedText &&
