@@ -107,6 +107,10 @@ define([
       var pageId = scrollToId;
       var currentPageId;
       var scrollToModel = Adapt.findById(scrollToId);
+      if (!scrollToModel) {
+        console.warn(`unable to find collection type for id '${scrollToId}'. check config of ${fromModel.get$("type")} id:'${fromModel.get("_id")}'`);
+        return;
+      }
       switch(scrollToModel.get("_type")){
         case "block":
           pageId = scrollToModel.get("_parent").get("_parent").get("_id");
