@@ -111,28 +111,8 @@ define([
         console.warn(`unable to find collection type for id '${scrollToId}'. check config of ${fromModel.get$("type")} id:'${fromModel.get("_id")}'`);
         return;
       }
-      switch(scrollToModel.get("_type")){
-        case "block":
-          pageId = scrollToModel.get("_parent").get("_parent").get("_id");
-          break;
-        case "article":
-          pageId = scrollToModel.get("_parent").get("_id");
-          break;
-        case "page":
-          pageId = scrollToModel.get("_id");
-          break;
-      }
-      switch(fromModel.get("_type")){
-        case "block":
-          currentPageId = fromModel.get("_parent").get("_parent").get("_id");
-          break;
-        case "article":
-          currentPageId = fromModel.get("_parent").get("_id");
-          break;
-        case "page":
-          currentPageId = fromModel.get("_id");
-          break;
-      }
+      pageId = this.getModelId(scrollToModel);
+      currentPageId = this.getModelId(fromModel);
       if (pageId !== currentPageId) {
         Backbone.history.navigate(`#/id/${pageId}`, {
           trigger: true,
@@ -148,6 +128,21 @@ define([
 
       var duration = fromModel.get('_trickle')._scrollDuration || 500;
       Adapt.scrollTo('.' + scrollToId, { duration: duration });
+    },
+
+    getModelId: function (model) {
+      const _type = model.get("_type");
+      if (_type === "block") {
+        const articleModel = Adapt.findById(model.get("_parentId"));
+        const pageModel = Adapt.findById(articleModel.get("_parentId"));
+        return pageModel.get("_id");
+      } else if (_type === "article") {
+        const pageModel = Adapt.findById(model.get("_parentId"));
+        return pageModel.get("_id");
+      } else if (_type === "page") {
+        return model.get("_id");
+      }
+      return;
     },
 
     shouldScrollPage: function(fromModel) {
